@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HabCo.X9.Core", "HabCo.X9.Core\HabCo.X9.Core.csproj", "{735C3662-AA04-422A-BFC9-DE7A81AF178D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HabCo.X9.Infrastructure", "HabCo.X9.Infrastructure\HabCo.X9.Infrastructure.csproj", "{843622D4-324D-4B5B-99F0-DD3D4E06378B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HabCo.X9.App", "HabCo.X9.App\HabCo.X9.App.csproj", "{BB2C6D84-C5D5-4C66-BC8C-680D0D546763}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{735C3662-AA04-422A-BFC9-DE7A81AF178D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{735C3662-AA04-422A-BFC9-DE7A81AF178D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{735C3662-AA04-422A-BFC9-DE7A81AF178D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{735C3662-AA04-422A-BFC9-DE7A81AF178D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{843622D4-324D-4B5B-99F0-DD3D4E06378B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{843622D4-324D-4B5B-99F0-DD3D4E06378B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{843622D4-324D-4B5B-99F0-DD3D4E06378B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{843622D4-324D-4B5B-99F0-DD3D4E06378B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB2C6D84-C5D5-4C66-BC8C-680D0D546763}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB2C6D84-C5D5-4C66-BC8C-680D0D546763}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB2C6D84-C5D5-4C66-BC8C-680D0D546763}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB2C6D84-C5D5-4C66-BC8C-680D0D546763}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

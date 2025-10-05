@@ -1,4 +1,4 @@
-using System.Windows;
+using Avalonia.Controls;
 
 namespace HabCo.X9.App
 {
@@ -7,6 +7,7 @@ namespace HabCo.X9.App
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
         }
     }
 }
