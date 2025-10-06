@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HabCo.X9.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251006004337_AddBookingDetails")]
-    partial class AddBookingDetails
+    [Migration("20251006021921_AddInventoryAndSupplier")]
+    partial class AddInventoryAndSupplier
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,6 +84,40 @@ namespace HabCo.X9.Infrastructure.Migrations
                     b.ToTable("Halls");
                 });
 
+            modelBuilder.Entity("HabCo.X9.Core.InventoryItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ReorderLevel")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("InventoryItems");
+                });
+
             modelBuilder.Entity("HabCo.X9.Core.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -116,6 +150,33 @@ namespace HabCo.X9.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HabCo.X9.Core.Supplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContactPerson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Suppliers");
+                });
+
             modelBuilder.Entity("HabCo.X9.Core.User", b =>
                 {
                     b.Property<int>("Id")
@@ -143,7 +204,7 @@ namespace HabCo.X9.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            PasswordHash = "admin_password_hash",
+                            PasswordHash = "$2a$11$GojGzD5d6Yffp8S4sA4jGuJkC/vjM2VwB/d2f9g.Z3vYlJ.L.Xq/S",
                             RoleId = 1,
                             Username = "admin"
                         });
@@ -160,6 +221,15 @@ namespace HabCo.X9.Infrastructure.Migrations
                     b.Navigation("Hall");
                 });
 
+            modelBuilder.Entity("HabCo.X9.Core.InventoryItem", b =>
+                {
+                    b.HasOne("HabCo.X9.Core.Supplier", "Supplier")
+                        .WithMany("InventoryItems")
+                        .HasForeignKey("SupplierId");
+
+                    b.Navigation("Supplier");
+                });
+
             modelBuilder.Entity("HabCo.X9.Core.User", b =>
                 {
                     b.HasOne("HabCo.X9.Core.Role", "Role")
@@ -169,6 +239,11 @@ namespace HabCo.X9.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.Supplier", b =>
+                {
+                    b.Navigation("InventoryItems");
                 });
 #pragma warning restore 612, 618
         }

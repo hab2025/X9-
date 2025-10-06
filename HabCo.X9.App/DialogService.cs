@@ -26,6 +26,14 @@ public class DialogService : IDialogService
                 dialog.Close();
             };
         }
+        else if (viewModel is InventoryItemEditorViewModel inventoryEditor)
+        {
+            inventoryEditor.CloseRequested += (saved) =>
+            {
+                tcs.SetResult(saved ? inventoryEditor.Item as TResult : null);
+                dialog.Close();
+            };
+        }
         else if (viewModel is BookingEditorViewModel bookingEditor)
         {
             bookingEditor.CloseRequested += (saved) =>
