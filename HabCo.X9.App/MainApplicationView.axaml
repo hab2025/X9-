@@ -21,6 +21,9 @@
         <DataTemplate DataType="{x:Type vm:UserManagementViewModel}">
             <vm:UserManagementView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReportsViewModel}">
+            <vm:ReportsView/>
+        </DataTemplate>
     </UserControl.DataTemplates>
 
     <DockPanel>
@@ -32,6 +35,7 @@
 
             <!-- Admin Section -->
             <TextBlock Text="Admin" FontSize="16" FontWeight="SemiBold" Margin="10,20,10,5" IsVisible="{Binding IsAdmin}"/>
+            <Button Content="Reports" Command="{Binding NavigateToReportsCommand}" HorizontalAlignment="Stretch" Margin="5" IsVisible="{Binding IsAdmin}"/>
             <Button Content="Hall Management" Command="{Binding NavigateToHallsCommand}" HorizontalAlignment="Stretch" Margin="5" IsVisible="{Binding IsAdmin}"/>
             <Button Content="Inventory" Command="{Binding NavigateToInventoryCommand}" HorizontalAlignment="Stretch" Margin="5" IsVisible="{Binding IsAdmin}"/>
             <Button Content="User Management" Command="{Binding NavigateToUserManagementCommand}" HorizontalAlignment="Stretch" Margin="5" IsVisible="{Binding IsAdmin}"/>

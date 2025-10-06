@@ -68,4 +68,10 @@ public partial class MainApplicationViewModel : ObservableObject
     {
         CurrentView = _services.GetRequiredService<UserManagementViewModel>();
     }
+
+    [RelayCommand]
+    private void NavigateToReports()
+    {
+        CurrentView = _services.GetRequiredService<ReportsViewModel>();
+    }
 }
