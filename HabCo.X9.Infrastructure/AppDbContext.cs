@@ -34,16 +34,15 @@ public class AppDbContext : DbContext
         var kitchenRole = new Role { Id = 3, Name = "Kitchen" };
         modelBuilder.Entity<Role>().HasData(adminRole, receptionRole, kitchenRole);
 
-        // Seed Admin User
         // Seed Admin User with a securely hashed password.
         // The password is 'admin'.
         modelBuilder.Entity<User>().HasData(new User
         {
             Id = 1,
             Username = "admin",
-            // Hashed using BCrypt.Net-Next
             PasswordHash = "$2a$11$GojGzD5d6Yffp8S4sA4jGuJkC/vjM2VwB/d2f9g.Z3vYlJ.L.Xq/S",
-            RoleId = adminRole.Id
+            RoleId = adminRole.Id,
+            IsActive = true
         });
     }
 }

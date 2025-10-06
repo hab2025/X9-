@@ -1,18 +1,16 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel;
-
-namespace HabCo.X9.App;
-
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
+namespace HabCo.X9.App;
+
 public partial class MainWindowViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private ObservableObject _currentViewModel;
-
     private readonly IServiceProvider _services;
     private readonly LoginViewModel _loginViewModel;
+
+    [ObservableProperty]
+    private object _currentViewModel;
 
     public MainWindowViewModel(IServiceProvider services)
     {
@@ -22,14 +20,11 @@ public partial class MainWindowViewModel : ObservableObject
         CurrentViewModel = _loginViewModel;
     }
 
-    private void OnLoginViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void OnLoginViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(LoginViewModel.IsLoginSuccessful) && _loginViewModel.IsLoginSuccessful)
         {
-            // Unsubscribe to prevent memory leaks
             _loginViewModel.PropertyChanged -= OnLoginViewModelPropertyChanged;
-
-            // Switch to the main application view, which contains its own navigation
             CurrentViewModel = _services.GetRequiredService<MainApplicationViewModel>();
         }
     }

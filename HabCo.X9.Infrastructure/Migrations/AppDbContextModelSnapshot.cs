@@ -35,6 +35,9 @@ namespace HabCo.X9.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("TEXT");
+
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("TEXT");
 

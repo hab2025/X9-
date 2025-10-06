@@ -10,7 +10,7 @@
         <TextBox Text="{Binding Username}"/>
         <TextBlock Text="Password"/>
         <TextBox Text="{Binding Password}" PasswordChar="*"/>
-        <Button Content="Login" Command="{Binding LoginCommand}" HorizontalAlignment="Stretch"/>
+        <Button Content="Login" Command="{Binding LoginAsyncCommand}" HorizontalAlignment="Stretch"/>
         <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" HorizontalAlignment="Center"/>
     </StackPanel>
 </UserControl>

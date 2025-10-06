@@ -29,7 +29,6 @@ public partial class UserManagementViewModel : ObservableObject
 
     private async Task LoadUsersAsync()
     {
-        // Include Role data to display the role name
         var usersFromDb = await _dbContext.Users
             .Include(u => u.Role)
             .ToListAsync();
@@ -47,7 +46,7 @@ public partial class UserManagementViewModel : ObservableObject
         {
             _dbContext.Users.Add(savedUser);
             await _dbContext.SaveChangesAsync();
-            await LoadUsersAsync(); // Refresh the list
+            await LoadUsersAsync();
         }
     }
 
@@ -63,7 +62,7 @@ public partial class UserManagementViewModel : ObservableObject
         {
             _dbContext.Users.Update(savedUser);
             await _dbContext.SaveChangesAsync();
-            await LoadUsersAsync(); // Refresh the list
+            await LoadUsersAsync();
         }
     }
 
@@ -75,6 +74,6 @@ public partial class UserManagementViewModel : ObservableObject
         SelectedUser.IsActive = !SelectedUser.IsActive;
         _dbContext.Users.Update(SelectedUser);
         await _dbContext.SaveChangesAsync();
-        await LoadUsersAsync(); // Refresh to show the change
+        await LoadUsersAsync();
     }
 }

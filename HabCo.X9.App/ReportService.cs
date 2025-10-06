@@ -34,10 +34,11 @@ public class ReportService : IReportService
                         {
                             table.ColumnsDefinition(columns =>
                             {
-                                columns.RelativeColumn();
-                                columns.RelativeColumn();
-                                columns.RelativeColumn();
-                                columns.RelativeColumn();
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn(3);
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn(2);
                             });
 
                             table.Header(header =>
@@ -45,20 +46,34 @@ public class ReportService : IReportService
                                 header.Cell().Text("Event Date");
                                 header.Cell().Text("Client");
                                 header.Cell().Text("Hall");
-                                header.Cell().AlignRight().Text("Cost");
+                                header.Cell().AlignRight().Text("Gross");
+                                header.Cell().AlignRight().Text("Discount");
+                                header.Cell().AlignRight().Text("Net Total");
                             });
 
                             foreach (var booking in bookings)
                             {
+                                var gross = booking.TotalCost + booking.Discount;
                                 table.Cell().Text($"{booking.EventDay:d}");
                                 table.Cell().Text(booking.ClientName);
                                 table.Cell().Text(booking.Hall.Name);
+                                table.Cell().AlignRight().Text($"{gross:C}");
+                                table.Cell().AlignRight().Text($"{booking.Discount:C}");
                                 table.Cell().AlignRight().Text($"{booking.TotalCost:C}");
                             }
                         });
 
-                        var totalRevenue = bookings.Sum(b => b.TotalCost);
-                        x.Item().AlignRight().Text($"Total Revenue: {totalRevenue:C}").SemiBold().FontSize(14);
+                        var totalGross = bookings.Sum(b => b.TotalCost + b.Discount);
+                        var totalDiscount = bookings.Sum(b => b.Discount);
+                        var totalNet = bookings.Sum(b => b.TotalCost);
+
+                        x.Item().AlignRight().Column(col =>
+                        {
+                            col.Spacing(5);
+                            col.Item().Text($"Total Gross: {totalGross:C}").SemiBold();
+                            col.Item().Text($"Total Discounts: {totalDiscount:C}").SemiBold();
+                            col.Item().Text($"Net Revenue: {totalNet:C}").Bold().FontSize(14);
+                        });
                     });
 
                 page.Footer()

@@ -43,6 +43,9 @@ public partial class BookingEditorViewModel : ObservableObject
     private decimal _totalCost;
 
     [ObservableProperty]
+    private decimal _discount;
+
+    [ObservableProperty]
     private BookingStatus _status;
 
     [ObservableProperty]
@@ -76,13 +79,11 @@ public partial class BookingEditorViewModel : ObservableObject
         StatusOptions = new ObservableCollection<BookingStatus>((BookingStatus[])Enum.GetValues(typeof(BookingStatus)));
         AvailableInventoryItems = new ObservableCollection<InventoryItem>(_dbContext.InventoryItems.ToList());
 
-        // Load existing order items or create a new list
         var existingOrder = _dbContext.KitchenOrders.Include(ko => ko.OrderItems).ThenInclude(oi => oi.InventoryItem).FirstOrDefault(ko => ko.BookingId == booking.Id);
         OrderItems = existingOrder != null
             ? new ObservableCollection<KitchenOrderItem>(existingOrder.OrderItems)
             : new ObservableCollection<KitchenOrderItem>();
 
-        // Load services and mark the ones already associated with the booking
         var allServices = _dbContext.Services.ToList();
         var bookingServiceIds = _dbContext.BookingServices
             .Where(bs => bs.BookingId == booking.Id)
@@ -95,8 +96,6 @@ public partial class BookingEditorViewModel : ObservableObject
                 IsSelected = bookingServiceIds.Contains(s.Id)
             }));
 
-
-        // Initialize properties from the booking object
         ClientName = booking.ClientName;
         ClientPhone = booking.ClientPhone;
         ClientEmail = booking.ClientEmail;
@@ -105,10 +104,9 @@ public partial class BookingEditorViewModel : ObservableObject
         EndTime = booking.EndTime;
         SelectedHall = Halls.FirstOrDefault(h => h.Id == booking.HallId) ?? Halls.FirstOrDefault();
         Status = booking.Status;
-
+        Discount = booking.Discount;
         Title = booking.Id == 0 ? "Add New Booking" : "Edit Booking";
 
-        // Subscribe to service selection changes to update the total cost
         foreach (var serviceVM in Services)
         {
             serviceVM.PropertyChanged += (sender, args) =>
@@ -120,7 +118,6 @@ public partial class BookingEditorViewModel : ObservableObject
             };
         }
 
-        // Calculate initial cost
         UpdateTotalCost();
     }
 
@@ -128,24 +125,19 @@ public partial class BookingEditorViewModel : ObservableObject
     {
         var hallCost = SelectedHall?.RentalPrice ?? 0;
         var servicesCost = Services.Where(s => s.IsSelected).Sum(s => s.Service.Price);
-        TotalCost = hallCost + servicesCost;
+        var grossTotal = hallCost + servicesCost;
+        TotalCost = grossTotal - Discount;
     }
 
-    partial void OnSelectedHallChanged(Hall? value)
-    {
-        UpdateTotalCost();
-    }
+    partial void OnSelectedHallChanged(Hall? value) => UpdateTotalCost();
+    partial void OnDiscountChanged(decimal value) => UpdateTotalCost();
 
     [RelayCommand]
     private void AddItem()
     {
         if (SelectedItemToAdd == null || QuantityToAdd <= 0) return;
-
         var existingItem = OrderItems.FirstOrDefault(oi => oi.InventoryItemId == SelectedItemToAdd.Id);
-        if (existingItem != null)
-        {
-            existingItem.Quantity += QuantityToAdd;
-        }
+        if (existingItem != null) { existingItem.Quantity += QuantityToAdd; }
         else
         {
             OrderItems.Add(new KitchenOrderItem
@@ -167,14 +159,12 @@ public partial class BookingEditorViewModel : ObservableObject
     [RelayCommand]
     private void Save()
     {
-        // TODO: Add robust validation
         if (string.IsNullOrWhiteSpace(ClientName) || SelectedHall == null || !EventDay.HasValue)
         {
             ErrorMessage = "Client Name, Hall, and Event Date are required.";
             return;
         }
 
-        // Update the underlying Booking object
         Booking.ClientName = ClientName;
         Booking.ClientPhone = ClientPhone;
         Booking.ClientEmail = ClientEmail;
@@ -183,9 +173,9 @@ public partial class BookingEditorViewModel : ObservableObject
         Booking.EndTime = EndTime ?? TimeSpan.Zero;
         Booking.HallId = SelectedHall.Id;
         Booking.TotalCost = TotalCost;
+        Booking.Discount = Discount;
         Booking.Status = Status;
 
-        // Find or create the KitchenOrder for this booking
         var kitchenOrder = _dbContext.KitchenOrders
                                .Include(ko => ko.OrderItems)
                                .FirstOrDefault(ko => ko.BookingId == Booking.Id);
@@ -198,9 +188,7 @@ public partial class BookingEditorViewModel : ObservableObject
 
         if (kitchenOrder != null)
         {
-            kitchenOrder.Status = KitchenOrderStatus.Pending; // Or logic to determine status
-
-            // Clear old items and add new ones
+            kitchenOrder.Status = KitchenOrderStatus.Pending;
             kitchenOrder.OrderItems.Clear();
             foreach (var item in OrderItems)
             {
@@ -212,10 +200,8 @@ public partial class BookingEditorViewModel : ObservableObject
             }
         }
 
-        // Update BookingServices
         var existingServices = _dbContext.BookingServices.Where(bs => bs.BookingId == Booking.Id);
         _dbContext.BookingServices.RemoveRange(existingServices);
-
         var selectedServices = Services.Where(s => s.IsSelected).Select(s => s.Service);
         foreach (var service in selectedServices)
         {

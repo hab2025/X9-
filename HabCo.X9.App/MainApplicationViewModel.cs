@@ -14,21 +14,19 @@ public partial class MainApplicationViewModel : ObservableObject
     private object _currentView;
 
     public bool IsAdmin => _authService.CurrentUser?.Role?.Name == "Admin";
-    public bool IsReception => _authService.CurrentUser?.Role?.Name == "Reception";
-    public bool IsKitchen => _authService.CurrentUser?.Role?.Name == "Kitchen";
+    public bool IsReception => _authService.CurrentUser?.Role?.Name == "Reception" || IsAdmin;
+    public bool IsKitchen => _authService.CurrentUser?.Role?.Name == "Kitchen" || IsAdmin;
 
     public MainApplicationViewModel(IServiceProvider services, IAuthenticationService authService)
     {
         _services = services;
         _authService = authService;
 
-        // Navigate to the default view for the current user's role
         NavigateToDefaultView();
     }
 
     private void NavigateToDefaultView()
     {
-        // Define default views for different roles
         if (IsAdmin || IsReception)
         {
             NavigateToBookings();
@@ -70,14 +68,14 @@ public partial class MainApplicationViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NavigateToReports()
-    {
-        CurrentView = _services.GetRequiredService<ReportsViewModel>();
-    }
-
-    [RelayCommand]
     private void NavigateToServices()
     {
         CurrentView = _services.GetRequiredService<ServiceManagementViewModel>();
+    }
+
+    [RelayCommand]
+    private void NavigateToReports()
+    {
+        CurrentView = _services.GetRequiredService<ReportsViewModel>();
     }
 }

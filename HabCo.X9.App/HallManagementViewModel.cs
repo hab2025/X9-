@@ -43,7 +43,7 @@ public partial class HallManagementViewModel : ObservableObject
         {
             _dbContext.Halls.Add(savedHall);
             await _dbContext.SaveChangesAsync();
-            await LoadHallsAsync(); // Refresh the list
+            await LoadHallsAsync();
         }
     }
 
@@ -59,7 +59,7 @@ public partial class HallManagementViewModel : ObservableObject
         {
             _dbContext.Halls.Update(savedHall);
             await _dbContext.SaveChangesAsync();
-            await LoadHallsAsync(); // Refresh the list
+            await LoadHallsAsync();
         }
     }
 
@@ -76,7 +76,7 @@ public partial class HallManagementViewModel : ObservableObject
         {
             _dbContext.Halls.Remove(SelectedHall);
             await _dbContext.SaveChangesAsync();
-            await LoadHallsAsync(); // Refresh the list
+            await LoadHallsAsync();
         }
     }
 }

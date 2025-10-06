@@ -29,7 +29,6 @@ public partial class InventoryViewModel : ObservableObject
 
     private async Task LoadItemsAsync()
     {
-        // Include Supplier data to display the supplier's name
         var itemsFromDb = await _dbContext.InventoryItems
             .Include(i => i.Supplier)
             .ToListAsync();
@@ -47,7 +46,7 @@ public partial class InventoryViewModel : ObservableObject
         {
             _dbContext.InventoryItems.Add(savedItem);
             await _dbContext.SaveChangesAsync();
-            await LoadItemsAsync(); // Refresh the list
+            await LoadItemsAsync();
         }
     }
 
@@ -63,7 +62,7 @@ public partial class InventoryViewModel : ObservableObject
         {
             _dbContext.InventoryItems.Update(savedItem);
             await _dbContext.SaveChangesAsync();
-            await LoadItemsAsync(); // Refresh the list
+            await LoadItemsAsync();
         }
     }
 
@@ -80,7 +79,7 @@ public partial class InventoryViewModel : ObservableObject
         {
             _dbContext.InventoryItems.Remove(SelectedItem);
             await _dbContext.SaveChangesAsync();
-            await LoadItemsAsync(); // Refresh the list
+            await LoadItemsAsync();
         }
     }
 }

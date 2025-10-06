@@ -35,8 +35,11 @@
             </StackPanel>
         </Grid>
 
-        <TextBlock Text="Total Cost:"/>
-        <NumericUpDown Value="{Binding TotalCost}" Minimum="0" Increment="100"/>
+        <TextBlock Text="Discount:"/>
+        <NumericUpDown Value="{Binding Discount}" Minimum="0" Increment="50"/>
+
+        <TextBlock Text="Total Cost:" FontWeight="Bold"/>
+        <TextBlock Text="{Binding TotalCost, StringFormat='{}{0:C}'}" FontSize="16" HorizontalAlignment="Right"/>
 
         <TextBlock Text="Status:"/>
         <ComboBox ItemsSource="{Binding StatusOptions}"
@@ -80,7 +83,6 @@
             <NumericUpDown Grid.Column="1" Value="{Binding QuantityToAdd}" Minimum="1" Margin="5,0"/>
             <Button Grid.Column="2" Content="Add" Command="{Binding AddItemCommand}"/>
         </Grid>
-
 
         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" Margin="0,20,0,0">
             <Button Content="Save" Command="{Binding SaveCommand}" IsDefault="True"/>
