@@ -13,6 +13,8 @@ public class AppDbContext : DbContext
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<KitchenOrder> KitchenOrders { get; set; }
     public DbSet<KitchenOrderItem> KitchenOrderItems { get; set; }
+    public DbSet<Service> Services { get; set; }
+    public DbSet<BookingService> BookingServices { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -21,6 +23,10 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Configure the composite key for the BookingService join table
+        modelBuilder.Entity<BookingService>()
+            .HasKey(bs => new { bs.BookingId, bs.ServiceId });
 
         // Seed Roles
         var adminRole = new Role { Id = 1, Name = "Admin" };

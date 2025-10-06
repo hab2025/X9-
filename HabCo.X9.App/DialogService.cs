@@ -26,6 +26,14 @@ public class DialogService : IDialogService
                 dialog.Close();
             };
         }
+        else if (viewModel is ServiceEditorViewModel serviceEditor)
+        {
+            serviceEditor.CloseRequested += (saved) =>
+            {
+                tcs.SetResult(saved ? serviceEditor.Service as TResult : null);
+                dialog.Close();
+            };
+        }
         else if (viewModel is UserEditorViewModel userEditor)
         {
             userEditor.CloseRequested += (saved) =>
