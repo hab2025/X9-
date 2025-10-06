@@ -6,8 +6,8 @@
              x:Class="HabCo.X9.App.HallManagementView">
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
-            <Button Content="Add Hall" Command="{Binding AddHallCommand}"/>
-            <Button Content="Edit Hall" Command="{Binding EditHallCommand}"/>
+            <Button Content="Add Hall" Command="{Binding AddHallAsyncCommand}"/>
+            <Button Content="Edit Hall" Command="{Binding EditHallAsyncCommand}"/>
             <Button Content="Delete Hall" Command="{Binding DeleteHallCommand}"/>
         </StackPanel>
 

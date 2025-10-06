@@ -10,53 +10,67 @@ namespace HabCo.X9.App;
 
 public partial class HallManagementViewModel : ObservableObject
 {
+    private readonly AppDbContext _dbContext;
+    private readonly IDialogService _dialogService;
+
     [ObservableProperty]
     private ObservableCollection<Hall> _halls;
 
     [ObservableProperty]
     private Hall? _selectedHall;
 
-    public HallManagementViewModel()
+    public HallManagementViewModel(AppDbContext dbContext, IDialogService dialogService)
     {
+        _dbContext = dbContext;
+        _dialogService = dialogService;
         Halls = new ObservableCollection<Hall>();
         LoadHallsAsync();
     }
 
     private async Task LoadHallsAsync()
     {
-        await using var db = new DesignTimeDbContextFactory().CreateDbContext(null);
-        var hallsFromDb = await db.Halls.ToListAsync();
+        var hallsFromDb = await _dbContext.Halls.ToListAsync();
         Halls = new ObservableCollection<Hall>(hallsFromDb);
     }
 
     [RelayCommand]
-    private void AddHall()
+    private async Task AddHallAsync()
     {
-        // TODO: Implement logic to open an "Add Hall" dialog.
+        var editorViewModel = new HallEditorViewModel(new Hall());
+        var savedHall = await _dialogService.ShowDialogAsync<Hall>(editorViewModel);
+
+        if (savedHall != null)
+        {
+            _dbContext.Halls.Add(savedHall);
+            await _dbContext.SaveChangesAsync();
+            await LoadHallsAsync(); // Refresh the list
+        }
     }
 
     [RelayCommand]
-    private void EditHall()
+    private async Task EditHallAsync()
     {
-        // TODO: Implement logic to open an "Edit Hall" dialog for the SelectedHall.
+        if (SelectedHall == null) return;
+
+        var editorViewModel = new HallEditorViewModel(SelectedHall);
+        var savedHall = await _dialogService.ShowDialogAsync<Hall>(editorViewModel);
+
+        if (savedHall != null)
+        {
+            _dbContext.Halls.Update(savedHall);
+            await _dbContext.SaveChangesAsync();
+            await LoadHallsAsync(); // Refresh the list
+        }
     }
 
     [RelayCommand]
     private async Task DeleteHallAsync()
     {
-        if (SelectedHall == null)
-        {
-            // In a real app, show a message to the user.
-            return;
-        }
+        if (SelectedHall == null) return;
 
         // In a real app, you would show a confirmation dialog here.
-
-        await using var db = new DesignTimeDbContextFactory().CreateDbContext(null);
-        db.Halls.Remove(SelectedHall);
-        await db.SaveChangesAsync();
-
-        // Refresh the list from the database to ensure consistency
-        await LoadHallsAsync();
+        _dbContext.Halls.Remove(SelectedHall);
+        await _dbContext.SaveChangesAsync();
+        await LoadHallsAsync(); // Refresh the list
     }
 }
