@@ -10,7 +10,7 @@ namespace HabCo.X9.App;
 
 public partial class LoginViewModel : ObservableObject
 {
-    private readonly AppDbContext _dbContext;
+    private readonly IAuthenticationService _authService;
 
     [ObservableProperty]
     private string _username;
@@ -24,9 +24,9 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool _isLoginSuccessful = false;
 
-    public LoginViewModel(AppDbContext dbContext)
+    public LoginViewModel(IAuthenticationService authService)
     {
-        _dbContext = dbContext;
+        _authService = authService;
     }
 
     [RelayCommand]
@@ -34,15 +34,15 @@ public partial class LoginViewModel : ObservableObject
     {
         ErrorMessage = string.Empty;
 
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == Username);
+        var success = await _authService.LoginAsync(Username, Password);
 
-        if (user != null && BCrypt.Verify(Password, user.PasswordHash))
+        if (success)
         {
             IsLoginSuccessful = true;
         }
         else
         {
-            ErrorMessage = "Invalid username or password.";
+            ErrorMessage = "Invalid username or password, or account is inactive.";
         }
     }
 }

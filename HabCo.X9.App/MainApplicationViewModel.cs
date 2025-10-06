@@ -8,15 +8,35 @@ namespace HabCo.X9.App;
 public partial class MainApplicationViewModel : ObservableObject
 {
     private readonly IServiceProvider _services;
+    private readonly IAuthenticationService _authService;
 
     [ObservableProperty]
     private object _currentView;
 
-    public MainApplicationViewModel(IServiceProvider services)
+    public bool IsAdmin => _authService.CurrentUser?.Role?.Name == "Admin";
+    public bool IsReception => _authService.CurrentUser?.Role?.Name == "Reception";
+    public bool IsKitchen => _authService.CurrentUser?.Role?.Name == "Kitchen";
+
+    public MainApplicationViewModel(IServiceProvider services, IAuthenticationService authService)
     {
         _services = services;
-        // Start with the booking calendar view by default
-        CurrentView = _services.GetRequiredService<BookingCalendarViewModel>();
+        _authService = authService;
+
+        // Navigate to the default view for the current user's role
+        NavigateToDefaultView();
+    }
+
+    private void NavigateToDefaultView()
+    {
+        // Define default views for different roles
+        if (IsAdmin || IsReception)
+        {
+            NavigateToBookings();
+        }
+        else if (IsKitchen)
+        {
+            NavigateToKitchen();
+        }
     }
 
     [RelayCommand]
@@ -41,5 +61,11 @@ public partial class MainApplicationViewModel : ObservableObject
     private void NavigateToKitchen()
     {
         CurrentView = _services.GetRequiredService<KitchenDashboardViewModel>();
+    }
+
+    [RelayCommand]
+    private void NavigateToUserManagement()
+    {
+        CurrentView = _services.GetRequiredService<UserManagementViewModel>();
     }
 }
