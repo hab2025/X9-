@@ -43,7 +43,10 @@ public partial class BookingEditorViewModel : ObservableObject
     private decimal _totalCost;
 
     [ObservableProperty]
-    private decimal _discount;
+    private DiscountType _discountType;
+
+    [ObservableProperty]
+    private decimal _discountValue;
 
     [ObservableProperty]
     private BookingStatus _status;
@@ -53,6 +56,7 @@ public partial class BookingEditorViewModel : ObservableObject
 
     public ObservableCollection<Hall> Halls { get; }
     public ObservableCollection<BookingStatus> StatusOptions { get; }
+    public ObservableCollection<DiscountType> DiscountTypes { get; }
     public ObservableCollection<InventoryItem> AvailableInventoryItems { get; }
     public ObservableCollection<KitchenOrderItem> OrderItems { get; set; }
     public ObservableCollection<SelectableServiceViewModel> Services { get; }
@@ -77,6 +81,7 @@ public partial class BookingEditorViewModel : ObservableObject
         // Load data for ComboBoxes
         Halls = new ObservableCollection<Hall>(_dbContext.Halls.ToList());
         StatusOptions = new ObservableCollection<BookingStatus>((BookingStatus[])Enum.GetValues(typeof(BookingStatus)));
+        DiscountTypes = new ObservableCollection<DiscountType>((DiscountType[])Enum.GetValues(typeof(DiscountType)));
         AvailableInventoryItems = new ObservableCollection<InventoryItem>(_dbContext.InventoryItems.ToList());
 
         var existingOrder = _dbContext.KitchenOrders.Include(ko => ko.OrderItems).ThenInclude(oi => oi.InventoryItem).FirstOrDefault(ko => ko.BookingId == booking.Id);
@@ -104,7 +109,8 @@ public partial class BookingEditorViewModel : ObservableObject
         EndTime = booking.EndTime;
         SelectedHall = Halls.FirstOrDefault(h => h.Id == booking.HallId) ?? Halls.FirstOrDefault();
         Status = booking.Status;
-        Discount = booking.Discount;
+        DiscountType = booking.DiscountType;
+        DiscountValue = booking.DiscountValue;
         Title = booking.Id == 0 ? "Add New Booking" : "Edit Booking";
 
         foreach (var serviceVM in Services)
@@ -126,11 +132,23 @@ public partial class BookingEditorViewModel : ObservableObject
         var hallCost = SelectedHall?.RentalPrice ?? 0;
         var servicesCost = Services.Where(s => s.IsSelected).Sum(s => s.Service.Price);
         var grossTotal = hallCost + servicesCost;
-        TotalCost = grossTotal - Discount;
+
+        var discountAmount = 0m;
+        if (DiscountType == DiscountType.Fixed)
+        {
+            discountAmount = DiscountValue;
+        }
+        else if (DiscountType == DiscountType.Percentage)
+        {
+            discountAmount = grossTotal * (DiscountValue / 100);
+        }
+
+        TotalCost = grossTotal - discountAmount;
     }
 
     partial void OnSelectedHallChanged(Hall? value) => UpdateTotalCost();
-    partial void OnDiscountChanged(decimal value) => UpdateTotalCost();
+    partial void OnDiscountTypeChanged(DiscountType value) => UpdateTotalCost();
+    partial void OnDiscountValueChanged(decimal value) => UpdateTotalCost();
 
     [RelayCommand]
     private void AddItem()
@@ -173,7 +191,8 @@ public partial class BookingEditorViewModel : ObservableObject
         Booking.EndTime = EndTime ?? TimeSpan.Zero;
         Booking.HallId = SelectedHall.Id;
         Booking.TotalCost = TotalCost;
-        Booking.Discount = Discount;
+        Booking.DiscountType = DiscountType;
+        Booking.DiscountValue = DiscountValue;
         Booking.Status = Status;
 
         var kitchenOrder = _dbContext.KitchenOrders
