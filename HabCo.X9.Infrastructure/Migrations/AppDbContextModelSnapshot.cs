@@ -35,13 +35,19 @@ namespace HabCo.X9.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("EventDate")
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("EventDay")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("HallId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsConfirmed")
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("TotalCost")
@@ -134,7 +140,7 @@ namespace HabCo.X9.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            PasswordHash = "admin_password_hash",
+                            PasswordHash = "$2a$11$GojGzD5d6Yffp8S4sA4jGuJkC/vjM2VwB/d2f9g.Z3vYlJ.L.Xq/S",
                             RoleId = 1,
                             Username = "admin"
                         });

@@ -19,6 +19,12 @@
         <DataTemplate DataType="{x:Type vm:HallManagementViewModel}">
             <vm:HallManagementView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BookingCalendarViewModel}">
+            <vm:BookingCalendarView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MainApplicationViewModel}">
+            <vm:MainApplicationView/>
+        </DataTemplate>
     </Window.DataTemplates>
 
     <ContentControl Content="{Binding CurrentViewModel}"/>

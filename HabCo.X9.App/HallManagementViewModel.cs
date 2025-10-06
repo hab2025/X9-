@@ -68,9 +68,15 @@ public partial class HallManagementViewModel : ObservableObject
     {
         if (SelectedHall == null) return;
 
-        // In a real app, you would show a confirmation dialog here.
-        _dbContext.Halls.Remove(SelectedHall);
-        await _dbContext.SaveChangesAsync();
-        await LoadHallsAsync(); // Refresh the list
+        var confirmed = await _dialogService.ShowConfirmationDialogAsync(
+            "Delete Hall",
+            $"Are you sure you want to delete '{SelectedHall.Name}'?");
+
+        if (confirmed)
+        {
+            _dbContext.Halls.Remove(SelectedHall);
+            await _dbContext.SaveChangesAsync();
+            await LoadHallsAsync(); // Refresh the list
+        }
     }
 }

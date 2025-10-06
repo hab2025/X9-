@@ -4,6 +4,7 @@ using HabCo.X9.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace HabCo.X9.App;
 
@@ -35,9 +36,7 @@ public partial class LoginViewModel : ObservableObject
 
         var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == Username);
 
-        // NOTE: This is a placeholder password check and is NOT secure.
-        // It will be replaced with a proper hashing mechanism.
-        if (user != null && user.PasswordHash == Password)
+        if (user != null && BCrypt.Verify(Password, user.PasswordHash))
         {
             IsLoginSuccessful = true;
         }
