@@ -44,4 +44,25 @@ public class DialogService : IDialogService
 
         return tcs.Task;
     }
+
+    public Task<bool> ShowConfirmationDialogAsync(string title, string message)
+    {
+        var viewModel = new ConfirmationDialogViewModel(title, message);
+        var dialog = new DialogWindow
+        {
+            DataContext = viewModel,
+            Width = 350,
+            Height = 150
+        };
+
+        var tcs = new TaskCompletionSource<bool>();
+        viewModel.CloseRequested += confirmed =>
+        {
+            tcs.SetResult(confirmed);
+            dialog.Close();
+        };
+
+        dialog.ShowDialog(MainWindow ?? throw new InvalidOperationException("Main window not found."));
+        return tcs.Task;
+    }
 }

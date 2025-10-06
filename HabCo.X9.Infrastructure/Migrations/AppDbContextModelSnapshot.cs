@@ -140,7 +140,7 @@ namespace HabCo.X9.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            PasswordHash = "admin_password_hash",
+                            PasswordHash = "$2a$11$GojGzD5d6Yffp8S4sA4jGuJkC/vjM2VwB/d2f9g.Z3vYlJ.L.Xq/S",
                             RoleId = 1,
                             Username = "admin"
                         });

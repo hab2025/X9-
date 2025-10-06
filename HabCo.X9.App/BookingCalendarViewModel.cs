@@ -24,6 +24,9 @@ public partial class BookingCalendarViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<Booking> _selectedDayBookings;
 
+    [ObservableProperty]
+    private Booking? _selectedBooking;
+
     public BookingCalendarViewModel(AppDbContext dbContext, IDialogService dialogService)
     {
         _dbContext = dbContext;
@@ -69,6 +72,39 @@ public partial class BookingCalendarViewModel : ObservableObject
         if (savedBooking != null)
         {
             _dbContext.Bookings.Add(savedBooking);
+            await _dbContext.SaveChangesAsync();
+            await LoadBookingsAsync(); // Refresh the list
+        }
+    }
+
+    [RelayCommand]
+    private async Task EditBookingAsync()
+    {
+        if (SelectedBooking == null) return;
+
+        var editorViewModel = new BookingEditorViewModel(_dbContext, SelectedBooking);
+        var savedBooking = await _dialogService.ShowDialogAsync<Booking>(editorViewModel);
+
+        if (savedBooking != null)
+        {
+            _dbContext.Bookings.Update(savedBooking);
+            await _dbContext.SaveChangesAsync();
+            await LoadBookingsAsync(); // Refresh the list
+        }
+    }
+
+    [RelayCommand]
+    private async Task DeleteBookingAsync()
+    {
+        if (SelectedBooking == null) return;
+
+        var confirmed = await _dialogService.ShowConfirmationDialogAsync(
+            "Delete Booking",
+            $"Are you sure you want to delete the booking for '{SelectedBooking.ClientName}' on {SelectedBooking.EventDay:d}?");
+
+        if (confirmed)
+        {
+            _dbContext.Bookings.Remove(SelectedBooking);
             await _dbContext.SaveChangesAsync();
             await LoadBookingsAsync(); // Refresh the list
         }

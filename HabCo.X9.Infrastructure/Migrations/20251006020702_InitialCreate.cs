@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace HabCo.X9.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -48,10 +50,12 @@ namespace HabCo.X9.Infrastructure.Migrations
                     ClientName = table.Column<string>(type: "TEXT", nullable: false),
                     ClientPhone = table.Column<string>(type: "TEXT", nullable: false),
                     ClientEmail = table.Column<string>(type: "TEXT", nullable: false),
-                    EventDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EventDay = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "TEXT", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "TEXT", nullable: false),
                     HallId = table.Column<int>(type: "INTEGER", nullable: false),
                     TotalCost = table.Column<decimal>(type: "TEXT", nullable: false),
-                    IsConfirmed = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,6 +88,21 @@ namespace HabCo.X9.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "Reception" },
+                    { 3, "Kitchen" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "PasswordHash", "RoleId", "Username" },
+                values: new object[] { 1, "$2a$11$GojGzD5d6Yffp8S4sA4jGuJkC/vjM2VwB/d2f9g.Z3vYlJ.L.Xq/S", 1, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_HallId",

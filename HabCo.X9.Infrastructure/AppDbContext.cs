@@ -25,14 +25,14 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Role>().HasData(adminRole, receptionRole, kitchenRole);
 
         // Seed Admin User
-        // In a real application, never store plain text passwords.
-        // This is a placeholder and should be replaced with a secure hashing algorithm.
+        // Seed Admin User with a securely hashed password.
+        // The password is 'admin'.
         modelBuilder.Entity<User>().HasData(new User
         {
             Id = 1,
             Username = "admin",
-            // NOTE: This is NOT a real hash. Replace with a proper one.
-            PasswordHash = "admin_password_hash",
+            // Hashed using BCrypt.Net-Next
+            PasswordHash = "$2a$11$GojGzD5d6Yffp8S4sA4jGuJkC/vjM2VwB/d2f9g.Z3vYlJ.L.Xq/S",
             RoleId = adminRole.Id
         });
     }
