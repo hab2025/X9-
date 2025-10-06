@@ -11,6 +11,8 @@ public class AppDbContext : DbContext
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<InventoryItem> InventoryItems { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
+    public DbSet<KitchenOrder> KitchenOrders { get; set; }
+    public DbSet<KitchenOrderItem> KitchenOrderItems { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
