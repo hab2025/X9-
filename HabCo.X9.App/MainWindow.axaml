@@ -3,10 +3,10 @@
         xmlns:vm="using:HabCo.X9.App"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="768"
         x:Class="HabCo.X9.App.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="HAB X9 - Event Hall Booking System">
+        Title="HAB X9 - Event Hall Management System">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
@@ -15,12 +15,6 @@
     <Window.DataTemplates>
         <DataTemplate DataType="{x:Type vm:LoginViewModel}">
             <vm:LoginView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:HallManagementViewModel}">
-            <vm:HallManagementView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:BookingCalendarViewModel}">
-            <vm:BookingCalendarView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:MainApplicationViewModel}">
             <vm:MainApplicationView/>

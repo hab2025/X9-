@@ -8,8 +8,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbConte
     public AppDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        // This connection string is used only for design-time tooling.
-        // The runtime connection string will be configured in the main application.
         optionsBuilder.UseSqlite("Data Source=hab_x9.db");
 
         return new AppDbContext(optionsBuilder.Options);

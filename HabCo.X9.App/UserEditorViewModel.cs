@@ -35,13 +35,11 @@ public partial class UserEditorViewModel : ObservableObject
     public UserEditorViewModel(AppDbContext dbContext, User user)
     {
         User = user;
-
         Roles = new ObservableCollection<Role>(dbContext.Roles.ToList());
 
         Username = user.Username;
         IsActive = user.IsActive;
         SelectedRole = Roles.FirstOrDefault(r => r.Id == user.RoleId);
-
         Title = user.Id == 0 ? "Add New User" : "Edit User";
     }
 
@@ -54,7 +52,6 @@ public partial class UserEditorViewModel : ObservableObject
             return;
         }
 
-        // For a new user, a password is required.
         if (User.Id == 0 && string.IsNullOrWhiteSpace(Password))
         {
             ErrorMessage = "Password is required for new users.";
@@ -65,7 +62,6 @@ public partial class UserEditorViewModel : ObservableObject
         User.IsActive = IsActive;
         User.RoleId = SelectedRole.Id;
 
-        // Only hash and update the password if a new one was entered.
         if (!string.IsNullOrWhiteSpace(Password))
         {
             User.PasswordHash = BCrypt.Net.BCrypt.HashPassword(Password);

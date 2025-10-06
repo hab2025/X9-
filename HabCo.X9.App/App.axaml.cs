@@ -37,7 +37,7 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        // Register DbContext with a scoped lifetime
+        // Register DbContext
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite("Data Source=hab_x9.db"));
 
@@ -47,20 +47,22 @@ public partial class App : Application
         services.AddTransient<IReportService, ReportService>();
 
         // Register ViewModels
-        // Transient: a new instance is created every time one is requested.
         services.AddTransient<LoginViewModel>();
         services.AddTransient<HallManagementViewModel>();
         services.AddTransient<BookingCalendarViewModel>();
         services.AddTransient<InventoryViewModel>();
         services.AddTransient<KitchenDashboardViewModel>();
         services.AddTransient<UserManagementViewModel>();
-        services.AddTransient<UserEditorViewModel>();
         services.AddTransient<ServiceManagementViewModel>();
-        services.AddTransient<ServiceEditorViewModel>();
         services.AddTransient<ReportsViewModel>();
-        services.AddTransient<MainApplicationViewModel>();
+        services.AddTransient<HallEditorViewModel>();
+        services.AddTransient<BookingEditorViewModel>();
+        services.AddTransient<InventoryItemEditorViewModel>();
+        services.AddTransient<UserEditorViewModel>();
+        services.AddTransient<ServiceEditorViewModel>();
+        services.AddTransient<ConfirmationDialogViewModel>();
 
-        // Singleton: a single instance is created and used for the lifetime of the application.
+        services.AddSingleton<MainApplicationViewModel>();
         services.AddSingleton<MainWindowViewModel>();
 
         return services.BuildServiceProvider();

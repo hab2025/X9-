@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HabCo.X9.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251006025705_AddKitchenManagement")]
-    partial class AddKitchenManagement
+    [Migration("20251006155202_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,9 @@ namespace HabCo.X9.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("TEXT");
+
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("TEXT");
 
@@ -61,6 +64,21 @@ namespace HabCo.X9.Infrastructure.Migrations
                     b.HasIndex("HallId");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.BookingService", b =>
+                {
+                    b.Property<int>("BookingId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("BookingId", "ServiceId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("BookingServices");
                 });
 
             modelBuilder.Entity("HabCo.X9.Core.Hall", b =>
@@ -196,6 +214,24 @@ namespace HabCo.X9.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HabCo.X9.Core.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Services");
+                });
+
             modelBuilder.Entity("HabCo.X9.Core.Supplier", b =>
                 {
                     b.Property<int>("Id")
@@ -229,6 +265,9 @@ namespace HabCo.X9.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -250,6 +289,7 @@ namespace HabCo.X9.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            IsActive = true,
                             PasswordHash = "$2a$11$GojGzD5d6Yffp8S4sA4jGuJkC/vjM2VwB/d2f9g.Z3vYlJ.L.Xq/S",
                             RoleId = 1,
                             Username = "admin"
@@ -265,6 +305,25 @@ namespace HabCo.X9.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Hall");
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.BookingService", b =>
+                {
+                    b.HasOne("HabCo.X9.Core.Booking", "Booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HabCo.X9.Core.Service", "Service")
+                        .WithMany("BookingServices")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("HabCo.X9.Core.InventoryItem", b =>
@@ -320,6 +379,11 @@ namespace HabCo.X9.Infrastructure.Migrations
             modelBuilder.Entity("HabCo.X9.Core.KitchenOrder", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.Service", b =>
+                {
+                    b.Navigation("BookingServices");
                 });
 
             modelBuilder.Entity("HabCo.X9.Core.Supplier", b =>

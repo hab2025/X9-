@@ -23,8 +23,6 @@ public partial class HallEditorViewModel : ObservableObject
     private string? _errorMessage;
 
     public Hall Hall { get; }
-
-    // This event will be used to close the dialog
     public event Action<bool> CloseRequested;
 
     public HallEditorViewModel(Hall hall)
@@ -33,30 +31,28 @@ public partial class HallEditorViewModel : ObservableObject
         Name = hall.Name;
         Capacity = hall.Capacity;
         RentalPrice = hall.RentalPrice;
-        Title = string.IsNullOrEmpty(hall.Name) ? "Add New Hall" : "Edit Hall";
+        Title = hall.Id == 0 ? "Add New Hall" : "Edit Hall";
     }
 
     [RelayCommand]
     private void Save()
     {
-        // Basic validation
-        if (string.IsNullOrWhiteSpace(Name) || Capacity <= 0 || RentalPrice < 0)
+        if (string.IsNullOrWhiteSpace(Name) || Capacity <= 0)
         {
-            ErrorMessage = "All fields are required and must have valid values.";
+            ErrorMessage = "Hall Name and a valid Capacity are required.";
             return;
         }
 
-        // Update the underlying Hall object
         Hall.Name = Name;
         Hall.Capacity = Capacity;
         Hall.RentalPrice = RentalPrice;
 
-        CloseRequested?.Invoke(true); // true indicates a save was performed
+        CloseRequested?.Invoke(true);
     }
 
     [RelayCommand]
     private void Cancel()
     {
-        CloseRequested?.Invoke(false); // false indicates cancellation
+        CloseRequested?.Invoke(false);
     }
 }

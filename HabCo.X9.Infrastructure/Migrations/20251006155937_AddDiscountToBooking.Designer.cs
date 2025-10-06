@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HabCo.X9.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251006133011_AddServices")]
-    partial class AddServices
+    [Migration("20251006155937_AddDiscountToBooking")]
+    partial class AddDiscountToBooking
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace HabCo.X9.Infrastructure.Migrations
 
                     b.Property<string>("ClientPhone")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Discount")
                         .HasColumnType("TEXT");
 
                     b.Property<TimeSpan>("EndTime")

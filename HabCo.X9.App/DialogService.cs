@@ -6,7 +6,6 @@ namespace HabCo.X9.App;
 
 public class DialogService : IDialogService
 {
-    // A simple way to get the main window. In a real app, this might be handled by an application service.
     private static Window? MainWindow => App.Current?.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop ? desktop.MainWindow : null;
 
     public Task<TResult?> ShowDialogAsync<TResult>(object viewModel) where TResult : class
@@ -26,19 +25,11 @@ public class DialogService : IDialogService
                 dialog.Close();
             };
         }
-        else if (viewModel is ServiceEditorViewModel serviceEditor)
+        else if (viewModel is BookingEditorViewModel bookingEditor)
         {
-            serviceEditor.CloseRequested += (saved) =>
+            bookingEditor.CloseRequested += (saved) =>
             {
-                tcs.SetResult(saved ? serviceEditor.Service as TResult : null);
-                dialog.Close();
-            };
-        }
-        else if (viewModel is UserEditorViewModel userEditor)
-        {
-            userEditor.CloseRequested += (saved) =>
-            {
-                tcs.SetResult(saved ? userEditor.User as TResult : null);
+                tcs.SetResult(saved ? bookingEditor.Booking as TResult : null);
                 dialog.Close();
             };
         }
@@ -50,22 +41,28 @@ public class DialogService : IDialogService
                 dialog.Close();
             };
         }
-        else if (viewModel is BookingEditorViewModel bookingEditor)
+        else if (viewModel is UserEditorViewModel userEditor)
         {
-            bookingEditor.CloseRequested += (saved) =>
+            userEditor.CloseRequested += (saved) =>
             {
-                tcs.SetResult(saved ? bookingEditor.Booking as TResult : null);
+                tcs.SetResult(saved ? userEditor.User as TResult : null);
+                dialog.Close();
+            };
+        }
+        else if (viewModel is ServiceEditorViewModel serviceEditor)
+        {
+            serviceEditor.CloseRequested += (saved) =>
+            {
+                tcs.SetResult(saved ? serviceEditor.Service as TResult : null);
                 dialog.Close();
             };
         }
         else
         {
-            // Handle other view model types if necessary
             dialog.Closed += (s, e) => tcs.SetResult(null);
         }
 
         dialog.ShowDialog(MainWindow ?? throw new InvalidOperationException("Main window not found."));
-
         return tcs.Task;
     }
 

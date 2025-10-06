@@ -1,10 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using HabCo.X9.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
-using BCrypt.Net;
 
 namespace HabCo.X9.App;
 
@@ -33,7 +29,6 @@ public partial class LoginViewModel : ObservableObject
     private async Task LoginAsync()
     {
         ErrorMessage = string.Empty;
-
         var success = await _authService.LoginAsync(Username, Password);
 
         if (success)

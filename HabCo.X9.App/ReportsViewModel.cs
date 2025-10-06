@@ -53,7 +53,6 @@ public partial class ReportsViewModel : ObservableObject
 
             var reportBytes = _reportService.CreateSalesPdfReport(bookings, StartDate.DateTime, EndDate.DateTime);
 
-            // Ensure the reports directory exists
             var reportsPath = Path.Combine(AppContext.BaseDirectory, "reports");
             Directory.CreateDirectory(reportsPath);
 

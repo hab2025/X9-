@@ -43,7 +43,7 @@ public partial class ServiceManagementViewModel : ObservableObject
         {
             _dbContext.Services.Add(savedService);
             await _dbContext.SaveChangesAsync();
-            await LoadServicesAsync(); // Refresh the list
+            await LoadServicesAsync();
         }
     }
 
@@ -59,7 +59,7 @@ public partial class ServiceManagementViewModel : ObservableObject
         {
             _dbContext.Services.Update(savedService);
             await _dbContext.SaveChangesAsync();
-            await LoadServicesAsync(); // Refresh the list
+            await LoadServicesAsync();
         }
     }
 
@@ -76,7 +76,7 @@ public partial class ServiceManagementViewModel : ObservableObject
         {
             _dbContext.Services.Remove(SelectedService);
             await _dbContext.SaveChangesAsync();
-            await LoadServicesAsync(); // Refresh the list
+            await LoadServicesAsync();
         }
     }
 }
