@@ -15,6 +15,9 @@
         <DataTemplate DataType="{x:Type vm:InventoryViewModel}">
             <vm:InventoryView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:KitchenDashboardViewModel}">
+            <vm:KitchenDashboardView/>
+        </DataTemplate>
     </UserControl.DataTemplates>
 
     <DockPanel>
@@ -24,6 +27,7 @@
             <Button Content="Bookings" Command="{Binding NavigateToBookingsCommand}" HorizontalAlignment="Stretch" Margin="5"/>
             <Button Content="Hall Management" Command="{Binding NavigateToHallsCommand}" HorizontalAlignment="Stretch" Margin="5"/>
             <Button Content="Inventory" Command="{Binding NavigateToInventoryCommand}" HorizontalAlignment="Stretch" Margin="5"/>
+            <Button Content="Kitchen" Command="{Binding NavigateToKitchenCommand}" HorizontalAlignment="Stretch" Margin="5"/>
         </StackPanel>
 
         <!-- Content Area -->

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HabCo.X9.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251006021921_AddInventoryAndSupplier")]
-    partial class AddInventoryAndSupplier
+    [Migration("20251006025705_AddKitchenManagement")]
+    partial class AddKitchenManagement
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,6 +116,52 @@ namespace HabCo.X9.Infrastructure.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("InventoryItems");
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.KitchenOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.ToTable("KitchenOrders");
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.KitchenOrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("InventoryItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("KitchenOrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventoryItemId");
+
+                    b.HasIndex("KitchenOrderId");
+
+                    b.ToTable("KitchenOrderItems");
                 });
 
             modelBuilder.Entity("HabCo.X9.Core.Role", b =>
@@ -230,6 +276,36 @@ namespace HabCo.X9.Infrastructure.Migrations
                     b.Navigation("Supplier");
                 });
 
+            modelBuilder.Entity("HabCo.X9.Core.KitchenOrder", b =>
+                {
+                    b.HasOne("HabCo.X9.Core.Booking", "Booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.KitchenOrderItem", b =>
+                {
+                    b.HasOne("HabCo.X9.Core.InventoryItem", "InventoryItem")
+                        .WithMany()
+                        .HasForeignKey("InventoryItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HabCo.X9.Core.KitchenOrder", "KitchenOrder")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("KitchenOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InventoryItem");
+
+                    b.Navigation("KitchenOrder");
+                });
+
             modelBuilder.Entity("HabCo.X9.Core.User", b =>
                 {
                     b.HasOne("HabCo.X9.Core.Role", "Role")
@@ -239,6 +315,11 @@ namespace HabCo.X9.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.KitchenOrder", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("HabCo.X9.Core.Supplier", b =>

@@ -36,4 +36,10 @@ public partial class MainApplicationViewModel : ObservableObject
     {
         CurrentView = _services.GetRequiredService<InventoryViewModel>();
     }
+
+    [RelayCommand]
+    private void NavigateToKitchen()
+    {
+        CurrentView = _services.GetRequiredService<KitchenDashboardViewModel>();
+    }
 }

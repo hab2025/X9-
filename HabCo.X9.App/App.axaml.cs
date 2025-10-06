@@ -50,6 +50,7 @@ public partial class App : Application
         services.AddTransient<HallManagementViewModel>();
         services.AddTransient<BookingCalendarViewModel>();
         services.AddTransient<InventoryViewModel>();
+        services.AddTransient<KitchenDashboardViewModel>();
         services.AddTransient<MainApplicationViewModel>();
 
         // Singleton: a single instance is created and used for the lifetime of the application.
