@@ -9,6 +9,8 @@ public class AppDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<Hall> Halls { get; set; }
     public DbSet<Booking> Bookings { get; set; }
+    public DbSet<InventoryItem> InventoryItems { get; set; }
+    public DbSet<Supplier> Suppliers { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

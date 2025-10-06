@@ -30,4 +30,10 @@ public partial class MainApplicationViewModel : ObservableObject
     {
         CurrentView = _services.GetRequiredService<HallManagementViewModel>();
     }
+
+    [RelayCommand]
+    private void NavigateToInventory()
+    {
+        CurrentView = _services.GetRequiredService<InventoryViewModel>();
+    }
 }

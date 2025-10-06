@@ -12,6 +12,9 @@
         <DataTemplate DataType="{x:Type vm:HallManagementViewModel}">
             <vm:HallManagementView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:InventoryViewModel}">
+            <vm:InventoryView/>
+        </DataTemplate>
     </UserControl.DataTemplates>
 
     <DockPanel>
@@ -20,6 +23,7 @@
             <TextBlock Text="HAB X9" FontSize="22" FontWeight="Bold" Margin="10"/>
             <Button Content="Bookings" Command="{Binding NavigateToBookingsCommand}" HorizontalAlignment="Stretch" Margin="5"/>
             <Button Content="Hall Management" Command="{Binding NavigateToHallsCommand}" HorizontalAlignment="Stretch" Margin="5"/>
+            <Button Content="Inventory" Command="{Binding NavigateToInventoryCommand}" HorizontalAlignment="Stretch" Margin="5"/>
         </StackPanel>
 
         <!-- Content Area -->

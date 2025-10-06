@@ -81,6 +81,40 @@ namespace HabCo.X9.Infrastructure.Migrations
                     b.ToTable("Halls");
                 });
 
+            modelBuilder.Entity("HabCo.X9.Core.InventoryItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ReorderLevel")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("InventoryItems");
+                });
+
             modelBuilder.Entity("HabCo.X9.Core.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -111,6 +145,33 @@ namespace HabCo.X9.Infrastructure.Migrations
                             Id = 3,
                             Name = "Kitchen"
                         });
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.Supplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContactPerson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("HabCo.X9.Core.User", b =>
@@ -157,6 +218,15 @@ namespace HabCo.X9.Infrastructure.Migrations
                     b.Navigation("Hall");
                 });
 
+            modelBuilder.Entity("HabCo.X9.Core.InventoryItem", b =>
+                {
+                    b.HasOne("HabCo.X9.Core.Supplier", "Supplier")
+                        .WithMany("InventoryItems")
+                        .HasForeignKey("SupplierId");
+
+                    b.Navigation("Supplier");
+                });
+
             modelBuilder.Entity("HabCo.X9.Core.User", b =>
                 {
                     b.HasOne("HabCo.X9.Core.Role", "Role")
@@ -166,6 +236,11 @@ namespace HabCo.X9.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("HabCo.X9.Core.Supplier", b =>
+                {
+                    b.Navigation("InventoryItems");
                 });
 #pragma warning restore 612, 618
         }
