@@ -44,6 +44,7 @@ public partial class App : Application
         // Register Services
         services.AddTransient<IDialogService, DialogService>();
         services.AddSingleton<IAuthenticationService, AuthenticationService>();
+        services.AddTransient<IReportService, ReportService>();
 
         // Register ViewModels
         // Transient: a new instance is created every time one is requested.
@@ -54,6 +55,7 @@ public partial class App : Application
         services.AddTransient<KitchenDashboardViewModel>();
         services.AddTransient<UserManagementViewModel>();
         services.AddTransient<UserEditorViewModel>();
+        services.AddTransient<ReportsViewModel>();
         services.AddTransient<MainApplicationViewModel>();
 
         // Singleton: a single instance is created and used for the lifetime of the application.
