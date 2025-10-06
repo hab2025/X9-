@@ -18,16 +18,23 @@
         <DataTemplate DataType="{x:Type vm:KitchenDashboardViewModel}">
             <vm:KitchenDashboardView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:UserManagementViewModel}">
+            <vm:UserManagementView/>
+        </DataTemplate>
     </UserControl.DataTemplates>
 
     <DockPanel>
         <!-- Navigation Pane -->
         <StackPanel DockPanel.Dock="Left" Width="200" Background="#F0F0F0" Spacing="5">
             <TextBlock Text="HAB X9" FontSize="22" FontWeight="Bold" Margin="10"/>
-            <Button Content="Bookings" Command="{Binding NavigateToBookingsCommand}" HorizontalAlignment="Stretch" Margin="5"/>
-            <Button Content="Hall Management" Command="{Binding NavigateToHallsCommand}" HorizontalAlignment="Stretch" Margin="5"/>
-            <Button Content="Inventory" Command="{Binding NavigateToInventoryCommand}" HorizontalAlignment="Stretch" Margin="5"/>
-            <Button Content="Kitchen" Command="{Binding NavigateToKitchenCommand}" HorizontalAlignment="Stretch" Margin="5"/>
+            <Button Content="Bookings" Command="{Binding NavigateToBookingsCommand}" HorizontalAlignment="Stretch" Margin="5" IsVisible="{Binding IsReception}"/>
+            <Button Content="Kitchen" Command="{Binding NavigateToKitchenCommand}" HorizontalAlignment="Stretch" Margin="5" IsVisible="{Binding IsKitchen}"/>
+
+            <!-- Admin Section -->
+            <TextBlock Text="Admin" FontSize="16" FontWeight="SemiBold" Margin="10,20,10,5" IsVisible="{Binding IsAdmin}"/>
+            <Button Content="Hall Management" Command="{Binding NavigateToHallsCommand}" HorizontalAlignment="Stretch" Margin="5" IsVisible="{Binding IsAdmin}"/>
+            <Button Content="Inventory" Command="{Binding NavigateToInventoryCommand}" HorizontalAlignment="Stretch" Margin="5" IsVisible="{Binding IsAdmin}"/>
+            <Button Content="User Management" Command="{Binding NavigateToUserManagementCommand}" HorizontalAlignment="Stretch" Margin="5" IsVisible="{Binding IsAdmin}"/>
         </StackPanel>
 
         <!-- Content Area -->
