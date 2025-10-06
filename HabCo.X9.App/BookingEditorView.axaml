@@ -43,6 +43,21 @@
                   SelectedItem="{Binding Status}"/>
 
         <Separator Margin="0,15,0,10"/>
+        <TextBlock Text="Additional Services" FontSize="16" FontWeight="Bold"/>
+        <ListBox ItemsSource="{Binding Services}" Height="120">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox IsChecked="{Binding IsSelected}" Margin="2">
+                        <TextBlock>
+                            <Run Text="{Binding Service.Name}"/>
+                            <Run Text="{Binding Service.Price, StringFormat='({0:C})'}"/>
+                        </TextBlock>
+                    </CheckBox>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Separator Margin="0,15,0,10"/>
         <TextBlock Text="Kitchen Order Items" FontSize="16" FontWeight="Bold"/>
 
         <DataGrid ItemsSource="{Binding OrderItems}"

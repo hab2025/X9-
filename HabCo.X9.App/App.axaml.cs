@@ -55,6 +55,8 @@ public partial class App : Application
         services.AddTransient<KitchenDashboardViewModel>();
         services.AddTransient<UserManagementViewModel>();
         services.AddTransient<UserEditorViewModel>();
+        services.AddTransient<ServiceManagementViewModel>();
+        services.AddTransient<ServiceEditorViewModel>();
         services.AddTransient<ReportsViewModel>();
         services.AddTransient<MainApplicationViewModel>();
 

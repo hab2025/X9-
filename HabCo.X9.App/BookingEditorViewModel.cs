@@ -52,6 +52,7 @@ public partial class BookingEditorViewModel : ObservableObject
     public ObservableCollection<BookingStatus> StatusOptions { get; }
     public ObservableCollection<InventoryItem> AvailableInventoryItems { get; }
     public ObservableCollection<KitchenOrderItem> OrderItems { get; set; }
+    public ObservableCollection<SelectableServiceViewModel> Services { get; }
 
     [ObservableProperty]
     private InventoryItem? _selectedItemToAdd;
@@ -81,6 +82,19 @@ public partial class BookingEditorViewModel : ObservableObject
             ? new ObservableCollection<KitchenOrderItem>(existingOrder.OrderItems)
             : new ObservableCollection<KitchenOrderItem>();
 
+        // Load services and mark the ones already associated with the booking
+        var allServices = _dbContext.Services.ToList();
+        var bookingServiceIds = _dbContext.BookingServices
+            .Where(bs => bs.BookingId == booking.Id)
+            .Select(bs => bs.ServiceId)
+            .ToHashSet();
+
+        Services = new ObservableCollection<SelectableServiceViewModel>(
+            allServices.Select(s => new SelectableServiceViewModel(s)
+            {
+                IsSelected = bookingServiceIds.Contains(s.Id)
+            }));
+
 
         // Initialize properties from the booking object
         ClientName = booking.ClientName;
@@ -90,10 +104,36 @@ public partial class BookingEditorViewModel : ObservableObject
         StartTime = booking.StartTime;
         EndTime = booking.EndTime;
         SelectedHall = Halls.FirstOrDefault(h => h.Id == booking.HallId) ?? Halls.FirstOrDefault();
-        TotalCost = booking.TotalCost;
         Status = booking.Status;
 
         Title = booking.Id == 0 ? "Add New Booking" : "Edit Booking";
+
+        // Subscribe to service selection changes to update the total cost
+        foreach (var serviceVM in Services)
+        {
+            serviceVM.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(SelectableServiceViewModel.IsSelected))
+                {
+                    UpdateTotalCost();
+                }
+            };
+        }
+
+        // Calculate initial cost
+        UpdateTotalCost();
+    }
+
+    private void UpdateTotalCost()
+    {
+        var hallCost = SelectedHall?.RentalPrice ?? 0;
+        var servicesCost = Services.Where(s => s.IsSelected).Sum(s => s.Service.Price);
+        TotalCost = hallCost + servicesCost;
+    }
+
+    partial void OnSelectedHallChanged(Hall? value)
+    {
+        UpdateTotalCost();
     }
 
     [RelayCommand]
@@ -170,6 +210,16 @@ public partial class BookingEditorViewModel : ObservableObject
                     Quantity = item.Quantity
                 });
             }
+        }
+
+        // Update BookingServices
+        var existingServices = _dbContext.BookingServices.Where(bs => bs.BookingId == Booking.Id);
+        _dbContext.BookingServices.RemoveRange(existingServices);
+
+        var selectedServices = Services.Where(s => s.IsSelected).Select(s => s.Service);
+        foreach (var service in selectedServices)
+        {
+            _dbContext.BookingServices.Add(new BookingService { BookingId = Booking.Id, ServiceId = service.Id });
         }
 
         CloseRequested?.Invoke(true);
