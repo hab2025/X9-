@@ -48,6 +48,8 @@ public partial class App : Application
         // Transient: a new instance is created every time one is requested.
         services.AddTransient<LoginViewModel>();
         services.AddTransient<HallManagementViewModel>();
+        services.AddTransient<BookingCalendarViewModel>();
+        services.AddTransient<MainApplicationViewModel>();
 
         // Singleton: a single instance is created and used for the lifetime of the application.
         services.AddSingleton<MainWindowViewModel>();

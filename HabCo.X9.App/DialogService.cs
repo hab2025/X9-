@@ -18,18 +18,19 @@ public class DialogService : IDialogService
 
         var tcs = new TaskCompletionSource<TResult?>();
 
-        if (viewModel is HallEditorViewModel editorViewModel)
+        if (viewModel is HallEditorViewModel hallEditor)
         {
-            editorViewModel.CloseRequested += (saved) =>
+            hallEditor.CloseRequested += (saved) =>
             {
-                if (saved)
-                {
-                    tcs.SetResult(editorViewModel.Hall as TResult);
-                }
-                else
-                {
-                    tcs.SetResult(null);
-                }
+                tcs.SetResult(saved ? hallEditor.Hall as TResult : null);
+                dialog.Close();
+            };
+        }
+        else if (viewModel is BookingEditorViewModel bookingEditor)
+        {
+            bookingEditor.CloseRequested += (saved) =>
+            {
+                tcs.SetResult(saved ? bookingEditor.Booking as TResult : null);
                 dialog.Close();
             };
         }

@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             xmlns:vm="using:HabCo.X9.App"
+             x:Class="HabCo.X9.App.MainApplicationView">
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="{x:Type vm:BookingCalendarViewModel}">
+            <vm:BookingCalendarView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:HallManagementViewModel}">
+            <vm:HallManagementView/>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <DockPanel>
+        <!-- Navigation Pane -->
+        <StackPanel DockPanel.Dock="Left" Width="200" Background="#F0F0F0" Spacing="5">
+            <TextBlock Text="HAB X9" FontSize="22" FontWeight="Bold" Margin="10"/>
+            <Button Content="Bookings" Command="{Binding NavigateToBookingsCommand}" HorizontalAlignment="Stretch" Margin="5"/>
+            <Button Content="Hall Management" Command="{Binding NavigateToHallsCommand}" HorizontalAlignment="Stretch" Margin="5"/>
+        </StackPanel>
+
+        <!-- Content Area -->
+        <ContentControl Content="{Binding CurrentView}" Margin="10"/>
+    </DockPanel>
+</UserControl>

@@ -29,8 +29,8 @@ public partial class MainWindowViewModel : ObservableObject
             // Unsubscribe to prevent memory leaks
             _loginViewModel.PropertyChanged -= OnLoginViewModelPropertyChanged;
 
-            // Switch to the main hall management view by resolving it from the DI container
-            CurrentViewModel = _services.GetRequiredService<HallManagementViewModel>();
+            // Switch to the main application view, which contains its own navigation
+            CurrentViewModel = _services.GetRequiredService<MainApplicationViewModel>();
         }
     }
 }
