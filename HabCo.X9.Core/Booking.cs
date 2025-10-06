@@ -14,6 +14,7 @@ public class Booking
     public int HallId { get; set; }
     public Hall Hall { get; set; }
     public decimal TotalCost { get; set; }
-    public decimal Discount { get; set; }
+    public DiscountType DiscountType { get; set; }
+    public decimal DiscountValue { get; set; }
     public BookingStatus Status { get; set; }
 }
