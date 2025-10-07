@@ -2,15 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:HabCo.X9.App"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
-             x:Class="HabCo.X9.App.HallManagementView">
+             x:Class="HabCo.X9.App.HallManagementView"
+             x:DataType="local:HallManagementViewModel">
     <DockPanel Margin="10">
         <TextBlock DockPanel.Dock="Top" Text="Hall Management" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
 
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" Margin="0,10,0,0">
-            <Button Content="Add Hall" Command="{Binding AddHallAsyncCommand}"/>
-            <Button Content="Edit Hall" Command="{Binding EditHallAsyncCommand}"/>
-            <Button Content="Delete Hall" Command="{Binding DeleteHallAsyncCommand}"/>
+            <Button Content="Add Hall" Command="{Binding AddHallCommand}"/>
+            <Button Content="Edit Hall" Command="{Binding EditHallCommand}"/>
+            <Button Content="Delete Hall" Command="{Binding DeleteHallCommand}"/>
         </StackPanel>
 
         <DataGrid ItemsSource="{Binding Halls}"

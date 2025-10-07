@@ -4,6 +4,8 @@ using Avalonia.Markup.Xaml;
 using HabCo.X9.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 
 namespace HabCo.X9.App;
@@ -36,6 +38,12 @@ public partial class App : Application
     private static IServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
+
+        // Add Logging
+        services.AddLogging(builder =>
+        {
+            builder.AddSerilog(dispose: true);
+        });
 
         // Register DbContext
         services.AddDbContext<AppDbContext>(options =>

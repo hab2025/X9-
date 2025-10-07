@@ -3,8 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="using:HabCo.X9.App"
+             xmlns:core="using:HabCo.X9.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
-             x:Class="HabCo.X9.App.BookingCalendarView">
+             x:Class="HabCo.X9.App.BookingCalendarView"
+             x:DataType="local:BookingCalendarViewModel"
+             x:CompileBindings="False">
     <UserControl.Resources>
         <local:BookingStatusToBrushConverter x:Key="StatusToBrush"/>
     </UserControl.Resources>
@@ -19,7 +22,7 @@
                      SelectedItem="{Binding SelectedBooking}"
                      Margin="0,10,0,0">
                 <ListBox.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate DataType="{x:Type core:Booking}">
                         <Border BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}" BorderThickness="2" CornerRadius="4" Padding="5" Margin="2">
                             <StackPanel>
                                 <TextBlock Text="{Binding ClientName}" FontWeight="Bold"/>
@@ -32,13 +35,12 @@
             </ListBox>
 
             <StackPanel Orientation="Horizontal" Spacing="5" Margin="0,10,0,0" HorizontalAlignment="Right">
-                <Button Content="New" Command="{Binding NewBookingAsyncCommand}"/>
-                <Button Content="Edit" Command="{Binding EditBookingAsyncCommand}"/>
-                <Button Content="Delete" Command="{Binding DeleteBookingAsyncCommand}"/>
+                <Button Content="New" Command="{Binding NewBookingCommand}"/>
+                <Button Content="Edit" Command="{Binding EditBookingCommand}"/>
+                <Button Content="Delete" Command="{Binding DeleteBookingCommand}"/>
             </StackPanel>
         </StackPanel>
 
-        <Calendar SelectionMode="Single"
-                  SelectedDate="{Binding SelectedDate, Mode=TwoWay}"/>
+        <Calendar SelectedDate="{Binding SelectedDate, Mode=TwoWay}"/>
     </DockPanel>
 </UserControl>

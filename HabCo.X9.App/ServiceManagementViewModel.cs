@@ -24,7 +24,7 @@ public partial class ServiceManagementViewModel : ObservableObject
         _dbContext = dbContext;
         _dialogService = dialogService;
         Services = new ObservableCollection<Service>();
-        LoadServicesAsync();
+        _ = LoadServicesAsync();
     }
 
     private async Task LoadServicesAsync()

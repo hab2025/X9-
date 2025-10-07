@@ -8,10 +8,10 @@ namespace HabCo.X9.App;
 public partial class HallEditorViewModel : ObservableObject
 {
     [ObservableProperty]
-    private string _title;
+    private string _title = string.Empty;
 
     [ObservableProperty]
-    private string _name;
+    private string _name = string.Empty;
 
     [ObservableProperty]
     private int _capacity;
@@ -23,7 +23,7 @@ public partial class HallEditorViewModel : ObservableObject
     private string? _errorMessage;
 
     public Hall Hall { get; }
-    public event Action<bool> CloseRequested;
+    public event Action<bool> CloseRequested = null!;
 
     public HallEditorViewModel(Hall hall)
     {

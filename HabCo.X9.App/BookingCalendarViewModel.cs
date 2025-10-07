@@ -32,7 +32,7 @@ public partial class BookingCalendarViewModel : ObservableObject
         _dialogService = dialogService;
         _allBookings = new List<Booking>();
         SelectedDayBookings = new ObservableCollection<Booking>();
-        LoadBookingsAsync();
+        _ = LoadBookingsAsync();
     }
 
     private async Task LoadBookingsAsync()
