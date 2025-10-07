@@ -1,21 +1,26 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HabCo.X9.App;
 
-public partial class LoginViewModel : ObservableObject
+public partial class LoginViewModel : ObservableValidator
 {
     private readonly IAuthenticationService _authService;
 
     [ObservableProperty]
-    private string _username;
+    [Required(ErrorMessage = "Username is required.")]
+    private string _username = string.Empty;
 
     [ObservableProperty]
-    private string _password;
+    [Required(ErrorMessage = "Password is required.")]
+    private string _password = string.Empty;
 
     [ObservableProperty]
-    private string _errorMessage;
+    private string _errorMessage = string.Empty;
 
     [ObservableProperty]
     private bool _isLoginSuccessful = false;
@@ -28,6 +33,13 @@ public partial class LoginViewModel : ObservableObject
     [RelayCommand]
     private async Task LoginAsync()
     {
+        ValidateAllProperties();
+        if (HasErrors)
+        {
+            ErrorMessage = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
+            return;
+        }
+
         ErrorMessage = string.Empty;
         var success = await _authService.LoginAsync(Username, Password);
 

@@ -16,16 +16,16 @@ public partial class BookingEditorViewModel : ObservableObject
     private readonly AppDbContext _dbContext;
 
     [ObservableProperty]
-    private string _title;
+    private string _title = string.Empty;
 
     [ObservableProperty]
-    private string _clientName;
+    private string _clientName = string.Empty;
 
     [ObservableProperty]
-    private string _clientPhone;
+    private string _clientPhone = string.Empty;
 
     [ObservableProperty]
-    private string _clientEmail;
+    private string _clientEmail = string.Empty;
 
     [ObservableProperty]
     private DateTimeOffset? _eventDay;
@@ -37,7 +37,7 @@ public partial class BookingEditorViewModel : ObservableObject
     private TimeSpan? _endTime;
 
     [ObservableProperty]
-    private Hall _selectedHall;
+    private Hall? _selectedHall;
 
     [ObservableProperty]
     private decimal _totalCost;
@@ -71,7 +71,7 @@ public partial class BookingEditorViewModel : ObservableObject
     private KitchenOrderItem? _selectedOrderItem;
 
     public Booking Booking { get; }
-    public event Action<bool> CloseRequested;
+    public event Action<bool> CloseRequested = null!;
 
     public BookingEditorViewModel(AppDbContext dbContext, Booking booking)
     {

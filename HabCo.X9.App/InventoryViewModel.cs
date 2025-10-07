@@ -24,7 +24,7 @@ public partial class InventoryViewModel : ObservableObject
         _dbContext = dbContext;
         _dialogService = dialogService;
         Items = new ObservableCollection<InventoryItem>();
-        LoadItemsAsync();
+        _ = LoadItemsAsync();
     }
 
     private async Task LoadItemsAsync()

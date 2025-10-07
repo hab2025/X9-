@@ -100,7 +100,7 @@ public class ReportService : IReportService
                         {
                             col.Spacing(5);
                             col.Item().Text($"Total Gross: {totalGross:C}").SemiBold();
-                            col.Item().Text($"Total Discounts: {totalDiscount:C}").SemiBold();
+                            col.Item().Text($"Total Discounts: {totalDiscountAmount:C}").SemiBold();
                             col.Item().Text($"Net Revenue: {totalNet:C}").Bold().FontSize(14);
                         });
                     });

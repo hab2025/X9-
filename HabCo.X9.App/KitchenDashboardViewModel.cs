@@ -23,7 +23,7 @@ public partial class KitchenDashboardViewModel : ObservableObject
     {
         _dbContext = dbContext;
         Orders = new ObservableCollection<KitchenOrder>();
-        LoadOrdersAsync();
+        _ = LoadOrdersAsync();
     }
 
     private async Task LoadOrdersAsync()

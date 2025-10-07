@@ -11,7 +11,7 @@ public partial class MainApplicationViewModel : ObservableObject
     private readonly IAuthenticationService _authService;
 
     [ObservableProperty]
-    private object _currentView;
+    private object _currentView = null!;
 
     public bool IsAdmin => _authService.CurrentUser?.Role?.Name == "Admin";
     public bool IsReception => _authService.CurrentUser?.Role?.Name == "Reception" || IsAdmin;

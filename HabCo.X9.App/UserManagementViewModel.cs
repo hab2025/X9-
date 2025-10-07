@@ -24,7 +24,7 @@ public partial class UserManagementViewModel : ObservableObject
         _dbContext = dbContext;
         _dialogService = dialogService;
         Users = new ObservableCollection<User>();
-        LoadUsersAsync();
+        _ = LoadUsersAsync();
     }
 
     private async Task LoadUsersAsync()

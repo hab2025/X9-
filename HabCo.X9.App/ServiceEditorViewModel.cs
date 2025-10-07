@@ -8,10 +8,10 @@ namespace HabCo.X9.App;
 public partial class ServiceEditorViewModel : ObservableObject
 {
     [ObservableProperty]
-    private string _title;
+    private string _title = string.Empty;
 
     [ObservableProperty]
-    private string _name;
+    private string _name = string.Empty;
 
     [ObservableProperty]
     private decimal _price;
@@ -20,7 +20,7 @@ public partial class ServiceEditorViewModel : ObservableObject
     private string? _errorMessage;
 
     public Service Service { get; }
-    public event Action<bool> CloseRequested;
+    public event Action<bool> CloseRequested = null!;
 
     public ServiceEditorViewModel(Service service)
     {

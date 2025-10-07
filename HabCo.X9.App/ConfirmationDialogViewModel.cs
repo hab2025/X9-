@@ -12,7 +12,7 @@ public partial class ConfirmationDialogViewModel : ObservableObject
     [ObservableProperty]
     private string _message;
 
-    public event Action<bool> CloseRequested;
+    public event Action<bool> CloseRequested = null!;
 
     public ConfirmationDialogViewModel(string title, string message)
     {

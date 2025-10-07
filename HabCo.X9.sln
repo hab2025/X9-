@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HabCo.X9.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HabCo.X9.App", "HabCo.X9.App\HabCo.X9.App.csproj", "{D9B1B511-E9EA-487E-958C-B50DF02BD5C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HabCo.X9.Tests", "HabCo.X9.Tests\HabCo.X9.Tests.csproj", "{9C3F1C17-7E07-4BD0-9737-27AB651284B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{D9B1B511-E9EA-487E-958C-B50DF02BD5C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9B1B511-E9EA-487E-958C-B50DF02BD5C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9B1B511-E9EA-487E-958C-B50DF02BD5C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C3F1C17-7E07-4BD0-9737-27AB651284B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C3F1C17-7E07-4BD0-9737-27AB651284B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C3F1C17-7E07-4BD0-9737-27AB651284B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C3F1C17-7E07-4BD0-9737-27AB651284B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

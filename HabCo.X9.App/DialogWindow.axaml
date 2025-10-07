@@ -2,8 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:CommunityToolkit.Mvvm.ComponentModel"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
         x:Class="HabCo.X9.App.DialogWindow"
+        x:DataType="vm:ObservableObject"
         SystemDecorations="None"
         WindowStartupLocation="CenterOwner"
         SizeToContent="WidthAndHeight">

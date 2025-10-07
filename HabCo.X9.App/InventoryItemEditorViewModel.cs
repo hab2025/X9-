@@ -13,19 +13,19 @@ public partial class InventoryItemEditorViewModel : ObservableObject
     private readonly AppDbContext _dbContext;
 
     [ObservableProperty]
-    private string _title;
+    private string _title = string.Empty;
 
     [ObservableProperty]
-    private string _name;
+    private string _name = string.Empty;
 
     [ObservableProperty]
-    private string _description;
+    private string _description = string.Empty;
 
     [ObservableProperty]
     private int _quantity;
 
     [ObservableProperty]
-    private string _unit;
+    private string _unit = string.Empty;
 
     [ObservableProperty]
     private int _reorderLevel;
@@ -38,7 +38,7 @@ public partial class InventoryItemEditorViewModel : ObservableObject
 
     public ObservableCollection<Supplier> Suppliers { get; }
     public InventoryItem Item { get; }
-    public event Action<bool> CloseRequested;
+    public event Action<bool> CloseRequested = null!;
 
     public InventoryItemEditorViewModel(AppDbContext dbContext, InventoryItem item)
     {

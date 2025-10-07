@@ -24,7 +24,7 @@ public partial class HallManagementViewModel : ObservableObject
         _dbContext = dbContext;
         _dialogService = dialogService;
         Halls = new ObservableCollection<Hall>();
-        LoadHallsAsync();
+        _ = LoadHallsAsync();
     }
 
     private async Task LoadHallsAsync()
