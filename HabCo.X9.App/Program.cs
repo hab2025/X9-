@@ -1,6 +1,8 @@
 using Avalonia;
+using Avalonia.Win32;
 using Serilog;
 using System;
+using System.Collections.Generic;
 
 namespace HabCo.X9.App;
 
@@ -38,5 +40,10 @@ class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
+            .With(new Win32PlatformOptions
+            {
+                // Force software rendering to avoid GPU compatibility issues.
+                RenderingMode = new List<Win32RenderingMode> { Win32RenderingMode.Software }
+            })
             .LogToTrace();
 }
