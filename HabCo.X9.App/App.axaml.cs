@@ -24,6 +24,19 @@ public partial class App : Application
     {
         Services = ConfigureServices();
 
+        // Automatically run migrations to create/update the database
+        try
+        {
+            var dbContext = Services.GetRequiredService<AppDbContext>();
+            dbContext.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            var logger = Services.GetRequiredService<ILogger<App>>();
+            logger.LogCritical(ex, "Failed to migrate database on startup.");
+            // In a real app, you might want to show a critical error window and exit.
+        }
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
